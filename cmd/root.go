@@ -4,9 +4,9 @@ package cmd
 
 import (
 	"fmt"
-	"os"
-
+	"github.com/blang/semver/v4"
 	"github.com/spf13/cobra"
+	"os"
 )
 
 var rootCmd = &cobra.Command{
@@ -22,6 +22,10 @@ to quickly create a Cobra application.`,
 	// has an action associated with it:
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("Hello")
+		version, err := semver.Make("1.3.2-alpha.2+92a56b79")
+		fmt.Println(version, err)
+		fmt.Println(version.Pre)
+		fmt.Println(version.Build)
 	},
 }
 
