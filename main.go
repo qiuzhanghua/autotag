@@ -13,6 +13,7 @@ func init() {
 	rootCmd.SetUsageFunc(func(command *cobra.Command) error {
 		fmt.Print(`Usage:
     autotag help
+    autotag version
     autotag show
     autotag write
     autotag next [pre|phase|patch|minor|major]
