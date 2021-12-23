@@ -4,6 +4,8 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/qiuzhanghua/autotag/tools"
+	"os"
 
 	"github.com/spf13/cobra"
 )
@@ -11,15 +13,20 @@ import (
 // writeCmd represents the write command
 var writeCmd = &cobra.Command{
 	Use:   "write",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "Write git info to files",
+	Long: `Write git info to files of project:
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+for Go Project, write to autotag.go
+for NodeJS Project, write to autotag.js
+`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("write called")
+		currentHash, err := tools.GitCurrentHash()
+		if err != nil {
+			fmt.Println("can't get current hash")
+			os.Exit(1)
+		}
+		fmt.Println("current hash", currentHash)
+		fmt.Println(tools.GitCurrenTag())
 	},
 }
 
