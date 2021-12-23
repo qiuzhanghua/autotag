@@ -52,7 +52,7 @@ func GitGetConfigBool(args ...string) bool {
 }
 
 func GitClosestVersion() string {
-	// git describe --abbrev=0
+	// git describe --tags --abbrev=0
 	s, err := RunAndReturn("git", "describe", "--abbrev=0")
 	if err != nil {
 		return ""
