@@ -1,6 +1,7 @@
 .idea
 .vscode
 autotag
+autotag.*
 
 *.exe
 *.exe~

@@ -42,6 +42,14 @@ func GitAddTag(tag string) (string, error) {
 	return strings.TrimSpace(s), nil
 }
 
+func GitRevOfTag(tag string) string {
+	s, err := RunAndReturn("git", "rev-parse", "--short", tag)
+	if err == nil {
+		return strings.TrimSpace(s)
+	}
+	return ""
+}
+
 func GitLatestTag() string {
 	arr, err := GitAllTags()
 	if err != nil {
