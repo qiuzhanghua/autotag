@@ -3,6 +3,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"github.com/Masterminds/semver/v3"
 	"github.com/qiuzhanghua/autotag/tools"
@@ -10,16 +11,32 @@ import (
 	"strings"
 )
 
-// nextCmd represents the next command
-var nextCmd = &cobra.Command{
+func init() {
+	NextCmd.SetUsageFunc(func(command *cobra.Command) error {
+
+		fmt.Print(`Usage:
+    autotag next [pre|phase|patch|minor|major]`)
+		return nil
+	})
+}
+
+// NextCmd represents the next command
+var NextCmd = &cobra.Command{
 	Use:   "next",
 	Short: "Add tag for next",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Long:  `Add next (pre/phase/patch/minor/major) tag.`,
+	Args: func(cmd *cobra.Command, args []string) error {
+		if len(args) != 1 {
+			return errors.New("requires one arg")
+		}
+		opts := []string{"pre", "phase", "patch", "minor", "major"}
+		for _, s := range opts {
+			if s == args[0] {
+				return nil
+			}
+		}
+		return errors.New("argument should be one of (" + strings.Join(opts, " ") + ")")
+	},
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 1 && (args[0] == "pre" || args[0] == "phase" || args[0] == "patch" || args[0] == "minor" || args[0] == "major") {
 			latest := tools.GitLatestTag()
@@ -66,18 +83,4 @@ autotag next major
 `)
 		}
 	},
-}
-
-func init() {
-	rootCmd.AddCommand(nextCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// nextCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// nextCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }

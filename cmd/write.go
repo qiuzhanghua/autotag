@@ -10,10 +10,11 @@ import (
 	"github.com/spf13/cobra"
 	"log"
 	"os"
+	"time"
 )
 
-// writeCmd represents the write command
-var writeCmd = &cobra.Command{
+// WriteCmd represents the write command
+var WriteCmd = &cobra.Command{
 	Use:   "write",
 	Short: "Write git info to files",
 	Long: `Write git info to files of project:
@@ -28,6 +29,7 @@ for Node.js Project, write to autotag.js
 			log.Fatal(err)
 		}
 		rev := tools.GitRevOfTag(latest)
+		dataString := time.Now().Format("2006-01-02")
 		_, err = os.Stat("go.mod")
 		if err == nil { // Go Project
 			file, err := os.Create("./autotag.go")
@@ -36,7 +38,11 @@ for Node.js Project, write to autotag.js
 			}
 			defer file.Close()
 			writer := bufio.NewWriter(file)
-			linesToWrite := []string{"package main\n", fmt.Sprintf("const AppVersion = \"%s\"", latest), fmt.Sprintf("const AppRevision = \"%s\"", rev)}
+			linesToWrite := []string{"package main\n",
+				fmt.Sprintf("const AppVersion = \"%s\"", latest),
+				fmt.Sprintf("const AppRevision = \"%s\"", rev),
+				fmt.Sprintf("const AppBuildDate = \"%s\"", dataString),
+			}
 			for _, line := range linesToWrite {
 				_, err := writer.WriteString(line + "\n")
 				if err != nil {
@@ -53,7 +59,10 @@ for Node.js Project, write to autotag.js
 			}
 			defer file.Close()
 			writer := bufio.NewWriter(file)
-			linesToWrite := []string{fmt.Sprintf("const AppVersion = \"%s\"", latest), fmt.Sprintf("const AppRevision = \"%s\"", rev)}
+			linesToWrite := []string{fmt.Sprintf("const AppVersion = \"%s\"", latest),
+				fmt.Sprintf("const AppRevision = \"%s\"", rev),
+				fmt.Sprintf("const AppBuildDate = \"%s\"", dataString),
+			}
 			for _, line := range linesToWrite {
 				_, err := writer.WriteString(line + "\n")
 				if err != nil {
@@ -65,18 +74,4 @@ for Node.js Project, write to autotag.js
 		}
 
 	},
-}
-
-func init() {
-	rootCmd.AddCommand(writeCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// writeCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// writeCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
