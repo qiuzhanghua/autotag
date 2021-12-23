@@ -24,7 +24,7 @@ to quickly create a Cobra application.`,
 		if len(args) == 1 && (args[0] == "pre" || args[0] == "phase" || args[0] == "patch" || args[0] == "minor" || args[0] == "major") {
 			latest := tools.GitLatestTag()
 			if len(latest) < 1 {
-				latest = "0.0.0-alpha.0"
+				latest = "0.0.0"
 			}
 			v, err := semver.NewVersion(latest)
 			if err != nil {

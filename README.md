@@ -1,4 +1,4 @@
-#AutoTag
+# AutoTag
 
 1. Get last tag(Git only)
 2. Calculate Next version of tag
