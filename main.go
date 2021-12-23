@@ -9,13 +9,24 @@ import (
 	"github.com/spf13/cobra"
 )
 
+func init() {
+	rootCmd.SetUsageFunc(func(command *cobra.Command) error {
+		fmt.Print(`Usage:
+    autotag help
+    autotag show
+    autotag write
+    autotag next [pre|phase|patch|minor|major]
+
+`)
+		return nil
+	})
+
+}
+
 var rootCmd = &cobra.Command{
 	Use:   "autotag",
 	Short: "AutoTag application",
 	Long:  `AutoTag application for tag add/(write to file)/(calculate next).`,
-	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("please run:\n    autotag --help")
-	},
 }
 
 func main() {
@@ -23,5 +34,5 @@ func main() {
 		fmt.Printf("autotag %s (%s %s)\n", AppVersion, AppRevision, AppBuildDate)
 	}
 	rootCmd.AddCommand(cmd.VersionCmd, cmd.ShowCmd, cmd.NextCmd, cmd.WriteCmd)
-	rootCmd.Execute()
+	_ = rootCmd.Execute()
 }
