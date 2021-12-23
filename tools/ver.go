@@ -3,7 +3,6 @@
 package tools
 
 import (
-	"fmt"
 	"github.com/Masterminds/semver/v3"
 	"strconv"
 	"strings"
@@ -67,9 +66,7 @@ func NextPhase(v semver.Version) (vNext semver.Version) {
 		return
 	}
 	if strings.HasPrefix(pre, "rc") {
-		fmt.Println(vNext)
 		vNext = vNext.IncPatch()
-		fmt.Println(vNext)
 		return
 	}
 	return

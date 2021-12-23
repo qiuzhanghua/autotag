@@ -34,7 +34,15 @@ import (
 //	return strings.TrimSpace(s), err
 //}
 
-func GetLatestTag() string {
+func GitAddTag(tag string) (string, error) {
+	s, err := RunAndReturn("git", "tag", tag)
+	if err != nil {
+		return "", err
+	}
+	return strings.TrimSpace(s), nil
+}
+
+func GitLatestTag() string {
 	arr, err := GitAllTags()
 	if err != nil {
 		return ""

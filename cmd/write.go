@@ -19,36 +19,14 @@ for Go Project, write to autotag.go
 for NodeJS Project, write to autotag.js
 `,
 	Run: func(cmd *cobra.Command, args []string) {
-		//currentHash, err := tools.GitCurrentHash()
-		//if err != nil {
-		//	fmt.Println("can't get current hash")
-		//	os.Exit(1)
-		//}
-		//fmt.Println("current hash", currentHash)
-		//fmt.Println(tools.GitCurrenTag())
-		//fmt.Println(tools.GitAllTags())
-		latest := tools.GetLatestTag()
-		fmt.Println(latest)
+		latest := tools.GitLatestTag()
 		v, _ := semver.NewVersion(latest)
-		fmt.Println(v)
 		if len(latest) > 0 {
 			fmt.Printf("next phase %s\n", tools.NextPhase(*v))
 			fmt.Printf("next patch %s\n", (*v).IncPatch())
 			fmt.Printf("next minor %s\n", (*v).IncMinor())
 			fmt.Printf("next major %s\n", (*v).IncMajor())
 		}
-		//latest = "v1.2.3-beta.1+build34"
-		//ver, err := semver.NewVersion(latest)
-		//fmt.Println(ver, err)
-		//v := ver.IncPatch()
-		//fmt.Println(v)
-		//v = v.IncMinor()
-		//fmt.Println(v)
-		//v = v.IncMajor()
-		//fmt.Println(v)
-		//v, err = v.SetPrerelease("alpha.1")
-		//v, err = v.SetMetadata("build345")
-		//fmt.Println(v, err)
 	},
 }
 
