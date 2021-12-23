@@ -48,7 +48,8 @@ func IncPrerelease(v semver.Version) (vNext semver.Version) {
 //NextPhase
 //  a.b.c => a.b.(c+1)-alpha.0
 //  a.b.c-alpha.x => a.b.(c+1)-beta.0
-//  a.b.c-beta.x => a.b.c
+//  a.b.c-beta.x => a.b.c-rc.0
+//  a.b.c-rc.x => a.b.c
 func NextPhase(v semver.Version) (vNext semver.Version) {
 	vNext = v
 	pre := v.Prerelease()
