@@ -53,7 +53,7 @@ for Node.js Project, write to autotag.js
 			}
 			defer file.Close()
 			writer := bufio.NewWriter(file)
-			linesToWrite := []string{"\n", fmt.Sprintf("const VERSION = \"%s\"", latest), fmt.Sprintf("const AppRevision = \"%s\"", rev)}
+			linesToWrite := []string{"\n", fmt.Sprintf("const AppVersion = \"%s\"", latest), fmt.Sprintf("const AppRevision = \"%s\"", rev)}
 			for _, line := range linesToWrite {
 				_, err := writer.WriteString(line + "\n")
 				if err != nil {
