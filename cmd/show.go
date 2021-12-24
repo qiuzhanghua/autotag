@@ -17,10 +17,22 @@ var ShowCmd = &cobra.Command{
 	Short: "show current tag and next tags",
 	Long:  `show current tag and next (pre/phase/patch/minor/major) tags.`,
 	Run: func(cmd *cobra.Command, args []string) {
+		if !tools.GitInstalled() {
+			fmt.Println("Git not installed.")
+			return
+		}
+		if !tools.GitDirIsRepo(".") {
+			fmt.Println("Current directory is not a git repository.")
+			return
+		}
+		if len(tools.GitHeadHash()) == 0 {
+			fmt.Println("Current git repository has not any commit.")
+			return
+		}
+
 		latest := tools.GitLatestTag()
 		if len(latest) < 1 {
-			fmt.Println("Tag not found/Not a git repository")
-			return
+			latest = "0.0.0"
 		}
 		v, err := semver.NewVersion(latest)
 		if err != nil {

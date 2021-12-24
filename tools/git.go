@@ -12,11 +12,14 @@ import (
 //	return strings.TrimSpace(s), err
 //}
 
-//func GitCurrentHash() (string, error) {
-//	// git rev-parse HEAD
-//	s, err := RunAndReturn("git", "rev-parse", "HEAD")
-//	return strings.TrimSpace(s), err
-//}
+func GitHeadHash() string {
+	// git rev-parse HEAD
+	s, err := RunAndReturn("git", "rev-parse", "HEAD")
+	if err != nil {
+		return ""
+	}
+	return strings.TrimSpace(s)
+}
 
 //func GitCurrentBranch() (string, error) {
 //	// git rev-parse --abbrev-ref f0c45331af2e8386f1e4ad5ef1946cba321d408f

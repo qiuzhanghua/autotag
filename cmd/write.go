@@ -24,6 +24,9 @@ for Node.js Project, write to autotag.js
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		latest := tools.GitLatestTag()
+		if len(latest) == 0 {
+			log.Fatalf("No tag defined in this repository")
+		}
 		_, err := semver.NewVersion(latest)
 		if err != nil {
 			log.Fatal(err)

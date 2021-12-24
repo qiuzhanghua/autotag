@@ -26,18 +26,29 @@ var NextCmd = &cobra.Command{
 	Short: "Add tag for next",
 	Long:  `Add next (pre/phase/patch/minor/major) tag.`,
 	Args: func(cmd *cobra.Command, args []string) error {
-		if len(args) != 1 {
-			return errors.New("requires one arg")
-		}
 		opts := []string{"pre", "phase", "patch", "minor", "major"}
-		for _, s := range opts {
-			if s == args[0] {
-				return nil
+		if len(args) == 1 {
+			for _, s := range opts {
+				if s == args[0] {
+					return nil
+				}
 			}
 		}
 		return errors.New("argument should be one of (" + strings.Join(opts, " ") + ")")
 	},
 	Run: func(cmd *cobra.Command, args []string) {
+		if !tools.GitInstalled() {
+			fmt.Println("Git not installed.")
+			return
+		}
+		if !tools.GitDirIsRepo(".") {
+			fmt.Println("Current directory is not a git repository.")
+			return
+		}
+		if len(tools.GitHeadHash()) == 0 {
+			fmt.Println("Current git repository has not any commit.")
+			return
+		}
 		if len(args) == 1 && (args[0] == "pre" || args[0] == "phase" || args[0] == "patch" || args[0] == "minor" || args[0] == "major") {
 			latest := tools.GitLatestTag()
 			if len(latest) < 1 {
