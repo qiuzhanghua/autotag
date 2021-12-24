@@ -34,6 +34,22 @@ import (
 //	return strings.TrimSpace(s), err
 //}
 
+func GitInstalled() bool {
+	_, err := RunAndReturn("git", "--version")
+	if err != nil {
+		return false
+	}
+	return true
+}
+
+func GitDirIsRepo(p string) bool {
+	_, err := RunAndReturn("git", "-C", p, "rev-parse")
+	if err != nil {
+		return false
+	}
+	return true
+}
+
 func GitAddTag(tag string) (string, error) {
 	s, err := RunAndReturn("git", "tag", tag)
 	if err != nil {
