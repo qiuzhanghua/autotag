@@ -3,6 +3,8 @@
 package tools
 
 import (
+	"github.com/Masterminds/semver/v3"
+	"sort"
 	"strings"
 )
 
@@ -71,39 +73,51 @@ func GitRevOfTag(tag string) string {
 
 func GitLatestTag() string {
 	arr, err := GitAllTags()
-	//fmt.Println(arr)
+
 	if err != nil {
-		return ""
+		return "0.0.0"
 	}
 	n := len(arr)
 	if n < 1 {
-		return ""
+		return "0.0.0"
 	}
-	return arr[0]
+	var vs []semver.Version
+	for _, s := range arr {
+		v, err := semver.NewVersion(s)
+		if err == nil {
+			vs = append(vs, *v)
+		}
+	}
+	sort.Slice(vs, func(i, j int) bool { return vs[i].LessThan(&vs[j]) })
+	if strings.HasPrefix(arr[0], "v") {
+		return "v" + vs[n-1].String()
+	}
+	return vs[n-1].String()
+	//return arr[n-1]
 }
 
 func GitAllTags() ([]string, error) {
-	//s, err := RunAndReturn("git", "tag")
-	//if err != nil {
-	//	return nil, err
-	//}
-	//return strings.Split(strings.TrimSpace(s), "\n"), nil
-	s, err := RunAndReturn("git", "rev-list", "--tags")
+	s, err := RunAndReturn("git", "tag")
 	if err != nil {
 		return nil, err
 	}
-	revs := strings.Split(s, "\n")
-	var tags []string
-	for _, rev := range revs {
-		t, err := RunAndReturn("git", "describe", "--tags", rev)
-		//fmt.Println(strings.TrimSpace(t), err)
-		if err != nil {
-			//			fmt.Println(err)
-			continue
-		}
-		tags = append(tags, strings.TrimSpace(t))
-	}
-	return tags, nil
+	return strings.Split(strings.TrimSpace(s), "\n"), nil
+	//s, err := RunAndReturn("git", "rev-list", "--tags")
+	//if err != nil {
+	//	return nil, err
+	//}
+	//revs := strings.Split(s, "\n")
+	//var tags []string
+	//for _, rev := range revs {
+	//	t, err := RunAndReturn("git", "describe", "--tags", rev)
+	//	//fmt.Println(strings.TrimSpace(t), err)
+	//	if err != nil {
+	//		//			fmt.Println(err)
+	//		continue
+	//	}
+	//	tags = append(tags, strings.TrimSpace(t))
+	//}
+	//return tags, nil
 }
 
 //func GitGetConfig(args ...string) string {
