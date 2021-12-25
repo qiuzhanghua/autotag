@@ -71,6 +71,7 @@ func GitRevOfTag(tag string) string {
 
 func GitLatestTag() string {
 	arr, err := GitAllTags()
+	//fmt.Println(arr)
 	if err != nil {
 		return ""
 	}
@@ -78,30 +79,31 @@ func GitLatestTag() string {
 	if n < 1 {
 		return ""
 	}
-	return arr[n-1]
+	return arr[0]
 }
 
 func GitAllTags() ([]string, error) {
-	s, err := RunAndReturn("git", "tag")
-	if err != nil {
-		return nil, err
-	}
-	return strings.Split(strings.TrimSpace(s), "\n"), nil
-	//s, err = RunAndReturn("git", "rev-list", "--tags")
+	//s, err := RunAndReturn("git", "tag")
 	//if err != nil {
 	//	return nil, err
 	//}
-	//revs := strings.Split(s, "\n")
-	//var tags []string
-	//for _, rev := range revs {
-	//	t, err := RunAndReturn("git", "describe", "--tags", rev)
-	//	if err != nil {
-	//		fmt.Println(err)
-	//		continue
-	//	}
-	//	tags = append(tags, t)
-	//}
-	//return tags, nil
+	//return strings.Split(strings.TrimSpace(s), "\n"), nil
+	s, err := RunAndReturn("git", "rev-list", "--tags")
+	if err != nil {
+		return nil, err
+	}
+	revs := strings.Split(s, "\n")
+	var tags []string
+	for _, rev := range revs {
+		t, err := RunAndReturn("git", "describe", "--tags", rev)
+		//fmt.Println(strings.TrimSpace(t), err)
+		if err != nil {
+			//			fmt.Println(err)
+			continue
+		}
+		tags = append(tags, strings.TrimSpace(t))
+	}
+	return tags, nil
 }
 
 //func GitGetConfig(args ...string) string {
