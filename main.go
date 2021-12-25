@@ -14,6 +14,7 @@ func init() {
 		fmt.Print(`Usage:
     autotag help
     autotag version
+    autotag current
     autotag show
     autotag write
     autotag next [pre|phase|patch|minor|major]
@@ -34,6 +35,7 @@ func main() {
 	cmd.VersionCmd.Run = func(cmd *cobra.Command, args []string) {
 		fmt.Printf("autotag %s (%s %s)\n", AppVersion, AppRevision, AppBuildDate)
 	}
-	rootCmd.AddCommand(cmd.VersionCmd, cmd.ShowCmd, cmd.NextCmd, cmd.WriteCmd)
+
+	rootCmd.AddCommand(cmd.VersionCmd, cmd.ShowCmd, cmd.NextCmd, cmd.WriteCmd, cmd.CurrentCmd)
 	_ = rootCmd.Execute()
 }
