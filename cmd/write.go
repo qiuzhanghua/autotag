@@ -42,9 +42,9 @@ for Node.js Project, write to autotag.js
 			defer file.Close()
 			writer := bufio.NewWriter(file)
 			linesToWrite := []string{"package main\n",
-				fmt.Sprintf("const AppVersion = \"%s\"", latest),
-				fmt.Sprintf("const AppRevision = \"%s\"", rev),
-				fmt.Sprintf("const AppBuildDate = \"%s\"", dataString),
+				fmt.Sprintf("var AppVersion = \"%s\"", latest),
+				fmt.Sprintf("var AppRevision = \"%s\"", rev),
+				fmt.Sprintf("var AppBuildDate = \"%s\"", dataString),
 			}
 			for _, line := range linesToWrite {
 				_, err := writer.WriteString(line + "\n")

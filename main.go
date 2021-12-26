@@ -15,6 +15,8 @@ func init() {
     autotag help
     autotag version
     autotag current
+    autotag hash
+    autotag date
     autotag show
     autotag write
     autotag next [pre|phase|patch|minor|major]
@@ -36,6 +38,13 @@ func main() {
 		fmt.Printf("autotag %s (%s %s)\n", AppVersion, AppRevision, AppBuildDate)
 	}
 
-	rootCmd.AddCommand(cmd.VersionCmd, cmd.ShowCmd, cmd.NextCmd, cmd.WriteCmd, cmd.CurrentCmd)
+	rootCmd.AddCommand(cmd.VersionCmd,
+		cmd.ShowCmd,
+		cmd.NextCmd,
+		cmd.WriteCmd,
+		cmd.CurrentCmd,
+		cmd.HashCmd,
+		cmd.DateCmd,
+	)
 	_ = rootCmd.Execute()
 }
