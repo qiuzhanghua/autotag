@@ -5,12 +5,12 @@ package cmd
 import (
 	"bufio"
 	"fmt"
+	"log"
+	"os"
+
 	"github.com/Masterminds/semver/v3"
 	"github.com/qiuzhanghua/autotag/tools"
 	"github.com/spf13/cobra"
-	"log"
-	"os"
-	"time"
 )
 
 // WriteCmd represents the write command
@@ -32,7 +32,8 @@ for Node.js Project, write to autotag.js
 			log.Fatal(err)
 		}
 		rev := tools.GitRevOfTag(latest)
-		dataString := time.Now().Format("2006-01-02")
+		// dataString := time.Now().Format("2006-01-02")
+		dateString := tools.GitDateOfHash(latest)
 		_, err = os.Stat("go.mod")
 		if err == nil { // Go Project
 			file, err := os.Create("./autotag.go")
@@ -44,7 +45,7 @@ for Node.js Project, write to autotag.js
 			linesToWrite := []string{"package main\n",
 				fmt.Sprintf("var AppVersion = \"%s\"", latest),
 				fmt.Sprintf("var AppRevision = \"%s\"", rev),
-				fmt.Sprintf("var AppBuildDate = \"%s\"", dataString),
+				fmt.Sprintf("var AppBuildDate = \"%s\"", dateString),
 			}
 			for _, line := range linesToWrite {
 				_, err := writer.WriteString(line + "\n")
@@ -64,7 +65,7 @@ for Node.js Project, write to autotag.js
 			writer := bufio.NewWriter(file)
 			linesToWrite := []string{fmt.Sprintf("const AppVersion = \"%s\"", latest),
 				fmt.Sprintf("const AppRevision = \"%s\"", rev),
-				fmt.Sprintf("const AppBuildDate = \"%s\"", dataString),
+				fmt.Sprintf("const AppBuildDate = \"%s\"", dateString),
 			}
 			for _, line := range linesToWrite {
 				_, err := writer.WriteString(line + "\n")

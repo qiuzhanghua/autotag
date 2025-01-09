@@ -105,6 +105,9 @@ autotag next major
 ```
 
 ### write
+
+**AppBuildDate is the date of the last commit**, AppRevision is the short commit hash, AppVersion is the latest tag.
+
 ```bash
 autotag write
 ```

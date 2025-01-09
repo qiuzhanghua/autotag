@@ -57,7 +57,7 @@ func GitHashOfTag(tag string) string {
 	return ""
 }
 
-//GitDateOfHash
+// GitDateOfHash
 // see https://stackabuse.com/git-show-date-of-a-commit/
 func GitDateOfHash(hash string) string {
 	s, err := RunAndReturn("git",
