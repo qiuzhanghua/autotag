@@ -2,10 +2,11 @@ package cmd
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/Masterminds/semver/v3"
 	"github.com/qiuzhanghua/autotag/tools"
 	"github.com/spf13/cobra"
-	"strings"
 )
 
 // CurrentCmd represents the current version

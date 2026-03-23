@@ -5,10 +5,11 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"strings"
+
 	"github.com/Masterminds/semver/v3"
 	"github.com/qiuzhanghua/autotag/tools"
 	"github.com/spf13/cobra"
-	"strings"
 )
 
 func init() {

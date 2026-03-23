@@ -3,9 +3,10 @@
 package tools
 
 import (
-	"github.com/Masterminds/semver/v3"
-	"sort"
+	"slices"
 	"strings"
+
+	"github.com/Masterminds/semver/v3"
 )
 
 func GitHeadHash() string {
@@ -87,7 +88,15 @@ func GitLatestTag() string {
 			vs = append(vs, *v)
 		}
 	}
-	sort.Slice(vs, func(i, j int) bool { return vs[i].LessThan(&vs[j]) })
+	slices.SortFunc(vs, func(a, b semver.Version) int {
+		if a.LessThan(&b) {
+			return -1
+		}
+		if b.LessThan(&a) {
+			return 1
+		}
+		return 0
+	})
 	if strings.HasPrefix(arr[0], "v") {
 		return "v" + vs[n-1].String()
 	}

@@ -2,8 +2,8 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/qiuzhanghua/autotag/tools"
 
+	"github.com/qiuzhanghua/autotag/tools"
 	"github.com/spf13/cobra"
 )
 

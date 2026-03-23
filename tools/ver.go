@@ -3,9 +3,10 @@
 package tools
 
 import (
-	"github.com/Masterminds/semver/v3"
 	"strconv"
 	"strings"
+
+	"github.com/Masterminds/semver/v3"
 )
 
 // IncPrerelease
